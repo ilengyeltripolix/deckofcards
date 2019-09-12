@@ -9,6 +9,8 @@ import java.util.List;
 @Setter
 public class Game {
 
+    private long id;
+
     private List<Player> players;
 
     private List<Deck> decks;

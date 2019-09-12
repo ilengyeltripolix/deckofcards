@@ -1,13 +1,12 @@
 package com.logmein.cards.controller;
 
+import com.logmein.cards.model.Game;
 import com.logmein.cards.service.api.CardGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/game")
@@ -20,10 +19,17 @@ public class CardGameEndpoint {
         this.cardGameService = cardGameService;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> getPersonalData() throws IllegalStateException {
-        cardGameService.createGame();
+    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> create(@RequestBody Game game) {
+        cardGameService.createGame(game);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @RequestMapping(value = "/delete/{gameId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> delete(@PathVariable long gameId) throws IllegalStateException {
+        cardGameService.deleteGame(gameId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
