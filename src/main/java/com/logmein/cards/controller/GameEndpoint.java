@@ -2,7 +2,6 @@ package com.logmein.cards.controller;
 
 import com.logmein.cards.model.Card;
 import com.logmein.cards.model.Game;
-import com.logmein.cards.model.Player;
 import com.logmein.cards.model.Suit;
 import com.logmein.cards.service.api.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +10,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/game")
-public class CardGameEndpoint {
+public class GameEndpoint {
 
     private final GameService gameService;
 
     @Autowired
-    public CardGameEndpoint(GameService gameService) {
+    public GameEndpoint(GameService gameService) {
         this.gameService = gameService;
     }
 
@@ -47,29 +45,12 @@ public class CardGameEndpoint {
         return resultGame != null ? ResponseEntity.status(HttpStatus.OK).body(resultGame) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @RequestMapping(value = "/add-player/{gameId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Game> addPlayerToGame(@PathVariable long gameId, @RequestBody Player player) {
-        Game resultGame = gameService.addPlayerToGame(gameId, player);
+    @RequestMapping(value = "/deal-card/{gameId}/{playerId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Game> dealCard(@PathVariable long gameId, @PathVariable long playerId) {
+        Optional<Game> resultGame = gameService.dealCard(gameId, playerId);
 
-        return resultGame != null ? ResponseEntity.status(HttpStatus.OK).body(resultGame) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-    //TODO: remove player, deal
-
-    @RequestMapping(value = "/get-player-cards/{gameId}/{playerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Card>> getPlayerCards(@PathVariable long gameId, @PathVariable long playerId) {
-        Optional<List<Card>> playerCards = gameService.getPlayerCards(gameId, playerId);
-
-        return playerCards
-                .map(cardList -> ResponseEntity.status(HttpStatus.OK).body(cardList))
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @RequestMapping(value = "/sorted-player-list/{gameId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Player>> getSortedPlayerList(@PathVariable long gameId) {
-        Optional<List<Player>> sortedPlayerList = gameService.getSortedPlayerList(gameId);
-
-        return sortedPlayerList
-                .map(cardList -> ResponseEntity.status(HttpStatus.OK).body(cardList))
+        return resultGame
+                .map(game -> ResponseEntity.status(HttpStatus.OK).body(game))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -80,5 +61,22 @@ public class CardGameEndpoint {
         return undealtSuit
                 .map(suits -> ResponseEntity.status(HttpStatus.OK).body(suits))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    //TODO eredmény nincs szépen
+    @RequestMapping(value = "/remaining-cards/{gameId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<Card, Integer>> getRemainingCards(@PathVariable long gameId) {
+        Optional<Map<Card, Integer>> undealtSuit = gameService.getRemainingCards(gameId);
+
+        return undealtSuit
+                .map(suits -> ResponseEntity.status(HttpStatus.OK).body(suits))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @RequestMapping(value = "/shuffle-cards/{gameId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> shuffleCards(@PathVariable long gameId) {
+        gameService.shuffleDeck(gameId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

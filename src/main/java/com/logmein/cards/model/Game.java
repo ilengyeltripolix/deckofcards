@@ -14,12 +14,12 @@ public class Game {
 
     private long id;
 
-    private Set<Player> players;
+    private List<Player> players;
 
-    private List<Deck> decks;
+    private List<Card> gameDeck;
 
     public Game() {
-        this.players = new HashSet<>();
-        this.decks = new ArrayList<>();
+        this.players = new ArrayList<>();
+        this.gameDeck = new ArrayList<>();
     }
 }

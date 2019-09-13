@@ -17,14 +17,11 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Optional<List<Card>> getPlayerCards(Game game, long playerId) {
-        Player foundPlayer = game
+        return game
                 .getPlayers()
                 .stream()
                 .filter(player -> player.getId() == playerId)
-                .findFirst()
-                .get();
-
-        return Optional.ofNullable(foundPlayer.getCards());
+                .findFirst().map(Player::getCards);
     }
 
     @Override
