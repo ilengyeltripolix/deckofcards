@@ -16,7 +16,7 @@ public class Card implements Comparable<Card>{
 
     @Override
     public int compareTo(Card card) {
-        return Integer.compare(card.suit.getValue() + (card.value.getValue() * 10),
-                this.suit.getValue() + (this.value.getValue() * 10));
+        return Integer.compare(card.suit.getValue() + (card.value.getValue()),
+                this.suit.getValue() + (this.value.getValue()));
     }
 }

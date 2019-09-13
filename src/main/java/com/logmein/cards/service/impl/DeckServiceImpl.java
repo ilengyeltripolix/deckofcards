@@ -31,7 +31,7 @@ public class DeckServiceImpl implements DeckService {
         Random randomGenerator = new Random();
         for (int i = 0; i < deck.size(); i++) {
             int index = randomGenerator.nextInt(i + 1);
-            // Simple swap
+
             Card card = deck.get(index);
             deck.set(index, deck.get(i));
             deck.set(i, card);
