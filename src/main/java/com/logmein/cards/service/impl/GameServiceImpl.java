@@ -136,7 +136,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Optional<Map<Suit, Integer>> getUndealtSuit(long gameId) {
+    public Optional<Map<Suit, Integer>> getUnDealtSuit(long gameId) {
         Game game = gameHolder.get(gameId);
 
         Map<Suit, Integer> resultCardsBySuit = new HashMap<>();

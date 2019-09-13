@@ -55,20 +55,19 @@ public class GameEndpoint {
     }
 
     @RequestMapping(value = "/undealt-suit/{gameId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<Suit, Integer>> getUndealtSuits(@PathVariable long gameId) {
-        Optional<Map<Suit, Integer>> undealtSuit = gameService.getUndealtSuit(gameId);
+    public ResponseEntity<Map<Suit, Integer>> getUnDealtSuits(@PathVariable long gameId) {
+        Optional<Map<Suit, Integer>> unDealtSuit = gameService.getUnDealtSuit(gameId);
 
-        return undealtSuit
+        return unDealtSuit
                 .map(suits -> ResponseEntity.status(HttpStatus.OK).body(suits))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    //TODO eredmény nincs szépen
     @RequestMapping(value = "/remaining-cards/{gameId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<Card, Integer>> getRemainingCards(@PathVariable long gameId) {
-        Optional<Map<Card, Integer>> undealtSuit = gameService.getRemainingCards(gameId);
+        Optional<Map<Card, Integer>> unDealtSuit = gameService.getRemainingCards(gameId);
 
-        return undealtSuit
+        return unDealtSuit
                 .map(suits -> ResponseEntity.status(HttpStatus.OK).body(suits))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

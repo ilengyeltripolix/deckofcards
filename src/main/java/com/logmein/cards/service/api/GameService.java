@@ -72,7 +72,7 @@ public interface GameService {
      * @param gameId the specified id for game
      * @return game object for show the actual game state
      */
-    Optional<Map<Suit, Integer>> getUndealtSuit(long gameId);
+    Optional<Map<Suit, Integer>> getUnDealtSuit(long gameId);
 
     /**
      * Get the count of each card (suit and value) remaining in the game deck sorted by suit
