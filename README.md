@@ -14,9 +14,11 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 ```shell
 mvn spring-boot:run
 ```
-mvn spring-boot:run
 
 ## Available endpoints
+
+After the application has started, with the swagger tool you can see the available endpoints
+for the application with their configuration, parameters on url: 
 
 http://localhost:8080/swagger-ui.html
 
